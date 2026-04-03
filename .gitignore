@@ -1,0 +1,10 @@
+# dev folders
+.claude
+node_modules
+dist
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+
+sections-list.md
