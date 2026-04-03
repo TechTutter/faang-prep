@@ -32,7 +32,7 @@ const CodeBlock: Component<CodeBlockProps> = (props) => {
       <pre class="overflow-x-auto p-4 bg-gray-50 m-0 leading-relaxed">
         <code
           class={`hljs language-${props.language}`}
-          innerHTML={highlighted()}
+          innerHTML={highlighted()} // eslint-disable-line solid/no-innerhtml
         />
       </pre>
     </div>

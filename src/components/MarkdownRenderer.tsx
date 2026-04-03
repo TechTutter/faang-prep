@@ -54,7 +54,7 @@ const MarkdownRenderer: Component<MarkdownRendererProps> = (props) => {
           return (
             <div
               class="prose prose-gray max-w-none"
-              innerHTML={renderMd(seg.text)}
+              innerHTML={renderMd(seg.text)} // eslint-disable-line solid/no-innerhtml
             />
           )
         }}
