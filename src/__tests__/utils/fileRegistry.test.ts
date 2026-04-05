@@ -25,6 +25,12 @@ describe('resolveFilePath', () => {
   it('collapses extra slashes via empty parts', () => {
     expect(resolveFilePath('foo.md', '/docs/a')).toBe('/docs/a/foo.md')
   })
+
+  it('resolves snippet paths correctly', () => {
+    expect(resolveFilePath('../patterns/graphs/bfs.py', '/snippets/patterns')).toBe(
+      '/snippets/patterns/graphs/bfs.py',
+    )
+  })
 })
 
 describe('getDirFromPath', () => {
@@ -38,6 +44,10 @@ describe('getDirFromPath', () => {
 
   it('returns the parent for a nested path', () => {
     expect(getDirFromPath('/docs/algorithms/sort.py')).toBe('/docs/algorithms')
+  })
+
+  it('handles snippet paths', () => {
+    expect(getDirFromPath('/snippets/patterns/graphs/bfs.py')).toBe('/snippets/patterns/graphs')
   })
 })
 
@@ -60,5 +70,16 @@ describe('NAV_SECTIONS', () => {
   it('slugs are unique', () => {
     const slugs = NAV_SECTIONS.map((s) => s.slug)
     expect(new Set(slugs).size).toBe(slugs.length)
+  })
+
+  it('includes problem-solving section', () => {
+    const slugs = NAV_SECTIONS.map((s) => s.slug)
+    expect(slugs).toContain('problem-solving')
+  })
+
+  it('indexPath for every section matches its slug', () => {
+    for (const section of NAV_SECTIONS) {
+      expect(section.indexPath).toBe(`/docs/${section.slug}/index.md`)
+    }
   })
 })

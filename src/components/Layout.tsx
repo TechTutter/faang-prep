@@ -1,7 +1,15 @@
 import type { ParentComponent } from 'solid-js'
 import { For } from 'solid-js'
 import { A, useLocation } from '@solidjs/router'
-import { NAV_SECTIONS } from '../utils/fileRegistry'
+import { NAV_SECTIONS, fileRegistry } from '../utils/fileRegistry'
+
+function getSectionPages(slug: string): string[] {
+  const prefix = `/docs/${slug}/`
+  return Object.keys(fileRegistry)
+    .filter(path => path.startsWith(prefix) && path.endsWith('.md') && !path.endsWith('/index.md'))
+    .map(path => path.slice(prefix.length).replace('.md', ''))
+    .sort()
+}
 
 const Layout: ParentComponent = (props) => {
   const location = useLocation()
@@ -27,6 +35,7 @@ const Layout: ParentComponent = (props) => {
                 const isActive = () =>
                   location.pathname === `/docs/${section.slug}` ||
                   location.pathname.startsWith(`/docs/${section.slug}/`)
+                const subpages = getSectionPages(section.slug)
                 return (
                   <li>
                     <A
@@ -39,6 +48,30 @@ const Layout: ParentComponent = (props) => {
                     >
                       {section.label}
                     </A>
+                    {isActive() && subpages.length > 0 && (
+                      <ul class="mt-0.5 ml-2 space-y-0.5 border-l border-gray-100 pl-2">
+                        <For each={subpages}>
+                          {(page) => {
+                            const isSubActive = () =>
+                              location.pathname === `/docs/${section.slug}/${page}`
+                            return (
+                              <li>
+                                <A
+                                  href={`/docs/${section.slug}/${page}`}
+                                  class="block px-2 py-1 rounded text-xs no-underline transition-colors"
+                                  classList={{
+                                    'text-blue-700 font-medium bg-blue-50': isSubActive(),
+                                    'text-gray-500 hover:bg-gray-50 hover:text-gray-700': !isSubActive(),
+                                  }}
+                                >
+                                  {page.charAt(0).toUpperCase() + page.slice(1)}
+                                </A>
+                              </li>
+                            )
+                          }}
+                        </For>
+                      </ul>
+                    )}
                   </li>
                 )
               }}

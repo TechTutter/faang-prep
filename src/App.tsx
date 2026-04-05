@@ -7,23 +7,24 @@ import { fileRegistry } from './utils/fileRegistry'
 
 const HomePage: Component = () => {
   const content = fileRegistry['/index.md'] ?? '# Welcome\n\nNo `index.md` found at project root.'
-  return <MarkdownRenderer content={content} currentDir="/" />
+  return <MarkdownRenderer content={content} currentDir="/" filePath="/index.md" />
 }
 
 const SectionPage: Component<RouteSectionProps> = (props) => {
   const section = () => props.params['section'] ?? ''
-  const indexPath = () => `/docs/${section()}/index.md`
+  const page = () => props.params['page'] ?? 'index'
+  const filePath = () => `/docs/${section()}/${page()}.md`
   const content = () =>
-    fileRegistry[indexPath()] ?? `# ${section()}\n\nContent coming soon.`
+    fileRegistry[filePath()] ?? `# ${section()}/${page()}\n\nContent coming soon.`
   return (
-    <MarkdownRenderer content={content()} currentDir={`/docs/${section()}`} />
+    <MarkdownRenderer content={content()} currentDir={`/docs/${section()}`} filePath={filePath()} />
   )
 }
 
 const App: Component = () => (
   <Router root={Layout}>
     <Route path="/" component={HomePage} />
-    <Route path="/docs/:section" component={SectionPage} />
+    <Route path="/docs/:section/:page?" component={SectionPage} />
   </Router>
 )
 

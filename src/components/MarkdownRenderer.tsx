@@ -1,11 +1,17 @@
 import type { Component, JSX } from 'solid-js'
 import { For } from 'solid-js'
 import { marked } from 'marked'
+import markedKatex from 'marked-katex-extension'
+import 'katex/dist/katex.min.css'
 import EmbedBlock from './EmbedBlock'
+import { fileRegistry } from '../utils/fileRegistry'
+
+marked.use(markedKatex({ throwOnError: false }))
 
 interface MarkdownRendererProps {
   content: string
   currentDir: string
+  filePath?: string
 }
 
 type Segment =
@@ -36,11 +42,28 @@ function parseSegments(content: string): Segment[] {
 }
 
 function renderMd(text: string): string {
-  return marked(text, { async: false }) as string
+  return marked(text, { async: false, breaks: true }) as string
+}
+
+function getSubpages(currentDir: string, filePath: string): string[] {
+  if (!filePath.endsWith('/index.md')) return []
+  const prefix = currentDir + '/'
+  return Object.keys(fileRegistry)
+    .filter(path => path.startsWith(prefix) && path.endsWith('.md') && path !== filePath)
+    .map(path => path.slice(prefix.length).replace('.md', ''))
+    .sort()
 }
 
 const MarkdownRenderer: Component<MarkdownRendererProps> = (props) => {
-  const segments = () => parseSegments(props.content)
+  const segments = () => {
+    let content = props.content
+    const subpages = getSubpages(props.currentDir, props.filePath || '')
+    if (subpages.length > 0) {
+      const links = subpages.map(page => `- [${page.charAt(0).toUpperCase() + page.slice(1)}](${page})`).join('\n')
+      content += '\n\n## Subpages\n\n' + links
+    }
+    return parseSegments(content)
+  }
 
   return (
     <div class="markdown-body">
