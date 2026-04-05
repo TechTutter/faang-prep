@@ -6,6 +6,9 @@ vi.mock('../../utils/fileRegistry', () => ({
   fileRegistry: {
     '/docs/snippet.py': 'print("hello")',
     '/docs/note.md': '# Note',
+    '/docs/complexity/index.md': '# Complexity',
+    '/docs/complexity/big-o.md': '# Big-O',
+    '/docs/complexity/space.md': '# Space',
   },
   resolveFilePath: (filename: string, currentDir: string) =>
     filename.startsWith('/') ? filename : `${currentDir}/${filename}`,
@@ -36,7 +39,6 @@ describe('MarkdownRenderer', () => {
     const { container } = render(() => (
       <MarkdownRenderer content="[[snippet.py]]" currentDir="/docs" />
     ))
-    // EmbedBlock should render a CodeBlock (pre element)
     expect(container.querySelector('pre')).not.toBeNull()
   })
 
@@ -71,5 +73,50 @@ describe('MarkdownRenderer', () => {
       <MarkdownRenderer content="text" currentDir="/" />
     ))
     expect(container.querySelector('.markdown-body')).not.toBeNull()
+  })
+
+  it('appends subpages section when filePath is an index.md with children', () => {
+    const { container } = render(() => (
+      <MarkdownRenderer
+        content="# Complexity"
+        currentDir="/docs/complexity"
+        filePath="/docs/complexity/index.md"
+      />
+    ))
+    // getSubpages finds big-o.md and space.md → rendered as a list of links
+    expect(container.textContent).toContain('Subpages')
+    expect(container.textContent).toContain('Big-o')
+    expect(container.textContent).toContain('Space')
+  })
+
+  it('does not append subpages section for non-index files', () => {
+    const { container } = render(() => (
+      <MarkdownRenderer
+        content="# Big-O"
+        currentDir="/docs/complexity"
+        filePath="/docs/complexity/big-o.md"
+      />
+    ))
+    expect(container.textContent).not.toContain('Subpages')
+  })
+
+  it('does not append subpages when filePath is omitted', () => {
+    const { container } = render(() => (
+      <MarkdownRenderer content="# Hello" currentDir="/docs/complexity" />
+    ))
+    expect(container.textContent).not.toContain('Subpages')
+  })
+
+  it('subpage links in the appended section are relative paths', () => {
+    const { container } = render(() => (
+      <MarkdownRenderer
+        content="# Complexity"
+        currentDir="/docs/complexity"
+        filePath="/docs/complexity/index.md"
+      />
+    ))
+    const links = Array.from(container.querySelectorAll('a')).map((a) => a.getAttribute('href'))
+    expect(links).toContain('big-o')
+    expect(links).toContain('space')
   })
 })

@@ -12,6 +12,8 @@
     "npm:eslint@^10.1.0": "10.1.0",
     "npm:highlight.js@^11.11.1": "11.11.1",
     "npm:jsdom@^29.0.1": "29.0.1",
+    "npm:katex@~0.16.44": "0.16.44",
+    "npm:marked-katex-extension@^5.1.7": "5.1.7_katex@0.16.44_marked@17.0.5",
     "npm:marked@^17.0.5": "17.0.5",
     "npm:solid-js@^1.9.11": "1.9.12",
     "npm:tailwindcss@^4.2.2": "4.2.2",
@@ -893,6 +895,9 @@
     "chai@6.2.2": {
       "integrity": "sha512-NUPRluOfOiTKBKvWPtSD4PhFvWCqOi0BGStNWs57X9js7XGTprSmFoz5F0tWhR4WPjNeR9jXqdC7/UpSJTnlRg=="
     },
+    "commander@8.3.0": {
+      "integrity": "sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww=="
+    },
     "convert-source-map@2.0.0": {
       "integrity": "sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg=="
     },
@@ -1235,6 +1240,13 @@
       "integrity": "sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==",
       "bin": true
     },
+    "katex@0.16.44": {
+      "integrity": "sha512-EkxoDTk8ufHqHlf9QxGwcxeLkWRR3iOuYfRpfORgYfqc8s13bgb+YtRY59NK5ZpRaCwq1kqA6a5lpX8C/eLphQ==",
+      "dependencies": [
+        "commander"
+      ],
+      "bin": true
+    },
     "kebab-case@1.0.2": {
       "integrity": "sha512-7n6wXq4gNgBELfDCpzKc+mRrZFs7D+wgfF5WRFLNAr4DA/qtr9Js8uOAVAfHhuLMfAcQ0pRKqbpjx+TcJVdE1Q=="
     },
@@ -1351,6 +1363,13 @@
       "integrity": "sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==",
       "dependencies": [
         "@jridgewell/sourcemap-codec"
+      ]
+    },
+    "marked-katex-extension@5.1.7_katex@0.16.44_marked@17.0.5": {
+      "integrity": "sha512-CVFzrqwpXGVaHByqcVvO/JfzW/OMWrAF3pEfNYNIruzBzM64moANSHapCg1qbzEN+NGf5unHwkMfwJIXHzyDAw==",
+      "dependencies": [
+        "katex",
+        "marked"
       ]
     },
     "marked@17.0.5": {
@@ -1823,6 +1842,8 @@
         "npm:eslint@^10.1.0",
         "npm:highlight.js@^11.11.1",
         "npm:jsdom@^29.0.1",
+        "npm:katex@~0.16.44",
+        "npm:marked-katex-extension@^5.1.7",
         "npm:marked@^17.0.5",
         "npm:solid-js@^1.9.11",
         "npm:tailwindcss@^4.2.2",

@@ -19,10 +19,24 @@ const docsPy = import.meta.glob<string>('/docs/**/*.py', {
   import: 'default',
 })
 
+const snippetsMd = import.meta.glob<string>('/snippets/**/*.md', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+})
+
+const snippetsPy = import.meta.glob<string>('/snippets/**/*.py', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+})
+
 export const fileRegistry: Readonly<Record<string, string>> = {
   ...rootMd,
   ...docsMd,
   ...docsPy,
+  ...snippetsMd,
+  ...snippetsPy,
 }
 
 /** Resolve a [[filename]] reference relative to the current directory. */
@@ -51,11 +65,11 @@ export interface NavSection {
 }
 
 export const NAV_SECTIONS: NavSection[] = [
-  { slug: 'complexity',      label: 'Complexity',      indexPath: '/docs/complexity/index.md' },
-  { slug: 'data-structures', label: 'Data Structures', indexPath: '/docs/data-structures/index.md' },
+  { slug: 'problem-solving',        label: 'Problem Solving',        indexPath: '/docs/problem-solving/index.md' },
   { slug: 'algorithms',      label: 'Algorithms',      indexPath: '/docs/algorithms/index.md' },
-  { slug: 'patterns',        label: 'Patterns',        indexPath: '/docs/patterns/index.md' },
+  { slug: 'data-structures', label: 'Data Structures', indexPath: '/docs/data-structures/index.md' },
   { slug: 'oop',             label: 'OOP & Design',    indexPath: '/docs/oop/index.md' },
+  { slug: 'complexity',      label: 'Complexity',      indexPath: '/docs/complexity/index.md' },
   { slug: 'system-design',   label: 'System Design',   indexPath: '/docs/system-design/index.md' },
   { slug: 'concurrency',     label: 'Concurrency',     indexPath: '/docs/concurrency/index.md' },
   { slug: 'networking',      label: 'Networking',       indexPath: '/docs/networking/index.md' },

@@ -6,6 +6,8 @@ import CodeBlock from './CodeBlock'
 // evaluation issues. Both modules are fully initialized before any component renders.
 import MarkdownRenderer from './MarkdownRenderer'
 
+const CODING_EXTENSIONS = new Set(['py', 'js', 'ts'])
+
 interface EmbedBlockProps {
   filename: string
   currentDir: string
@@ -29,9 +31,9 @@ const EmbedBlock: Component<EmbedBlockProps> = (props) => {
         </div>
       }
     >
-      <div class="embed-block">
+      <div class="embed-block mt-4">
         <Show
-          when={ext() === 'py' || ext() === 'js' || ext() === 'ts' || ext() === 'jsx' || ext() === 'tsx'}
+          when={CODING_EXTENSIONS.has(ext())}
           fallback={
             <MarkdownRenderer
               content={content()!}
